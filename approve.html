@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Gus Tractor — Customer Authorization</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f4f7f4;min-height:100vh;padding:0 0 40px;-webkit-font-smoothing:antialiased;}
+.topbar{background:#1B3A1B;padding:16px 20px;border-bottom:3px solid #C9A84C;}
+.topbar-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.logo-box{width:46px;height:46px;background:#C9A84C;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#1B3A1B;flex-shrink:0;}
+.logo-name{font-size:18px;font-weight:700;color:#C9A84C;line-height:1;}
+.logo-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.wrap{max-width:600px;margin:20px auto;padding:0 16px;}
+.card{background:#fff;border-radius:10px;border:1px solid #ddd;overflow:hidden;margin-bottom:14px;}
+.card-hdr{background:#1B3A1B;color:#C9A84C;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 16px;}
+.card-body{padding:16px;}
+.kv{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid #f0f0f0;font-size:13px;}
+.kv:last-child{border-bottom:none;}
+.kk{font-weight:600;color:#555;flex-shrink:0;margin-right:12px;}
+.kv-val{color:#111;text-align:right;max-width:60%;}
+.note-box{background:#fffde7;border:1px solid #ffe082;border-radius:4px;padding:10px 12px;font-size:13px;color:#555;margin-top:8px;}
+.fee-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #f0f0f0;}
+.fee-row:last-child{border-bottom:none;}
+.fee-lbl{flex:1;font-size:13px;color:#333;}
+.fee-amt{display:flex;align-items:center;gap:3px;}
+.fee-amt span{font-size:14px;color:#555;}
+.fee-inp{width:88px;padding:6px 8px;border:1px solid #ccc;border-radius:5px;font-size:13px;text-align:right;outline:none;}
+.fee-inp:focus{border-color:#1B3A1B;}
+.init-inp{width:64px;padding:6px 8px;border:1px solid #ccc;border-radius:5px;font-size:13px;text-align:center;outline:none;}
+.init-inp:focus{border-color:#1B3A1B;}
+.init-lbl{font-size:10px;color:#999;text-align:center;margin-top:2px;}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0 0;font-size:15px;font-weight:700;color:#1B3A1B;border-top:2px solid #1B3A1B;margin-top:4px;}
+.terms{font-size:12px;color:#444;line-height:1.75;}
+.terms strong{color:#1B3A1B;}
+.sig-input{width:100%;padding:13px 14px;border:2px solid #1B3A1B;border-radius:8px;font-size:17px;outline:none;margin-top:4px;}
+.sig-input:focus{border-color:#C9A84C;}
+.date-input{width:100%;padding:10px 14px;border:1px solid #ccc;border-radius:8px;font-size:14px;outline:none;background:#f9f9f9;margin-top:4px;}
+.fl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#777;margin-bottom:2px;display:block;}
+.err{color:#c62828;font-size:13px;margin-bottom:8px;display:none;padding:8px 12px;background:#ffebee;border-radius:6px;}
+.submit-btn{width:100%;background:#1B3A1B;color:#C9A84C;border:none;border-radius:8px;padding:17px;font-size:17px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:opacity .2s;}
+.submit-btn:active{opacity:.85;}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.esign-note{font-size:11px;color:#999;text-align:center;margin-top:8px;line-height:1.5;}
+.success{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:32px 24px;text-align:center;margin-bottom:16px;}
+.success-icon{font-size:56px;margin-bottom:12px;}
+.success-title{font-size:22px;font-weight:700;color:#2E7D32;margin-bottom:8px;}
+.success-detail{font-size:14px;color:#555;margin-bottom:4px;}
+.success-box{font-size:12px;color:#888;background:#f0f7f0;border-radius:6px;padding:10px 14px;margin-top:14px;line-height:1.6;}
+.error-card{background:#fff3e0;border:1px solid #ffe0b2;border-radius:10px;padding:28px 20px;text-align:center;margin-bottom:16px;}
+.error-icon{font-size:40px;margin-bottom:10px;}
+.error-title{font-size:18px;font-weight:700;color:#e65100;margin-bottom:8px;}
+.error-msg{font-size:14px;color:#555;margin-bottom:16px;line-height:1.5;}
+.call-btn{display:inline-block;background:#1B3A1B;color:#C9A84C;padding:13px 26px;border-radius:8px;font-weight:700;text-decoration:none;font-size:16px;}
+.loading{text-align:center;padding:48px 20px;color:#666;}
+.loading-icon{font-size:36px;margin-bottom:12px;animation:spin 1.5s linear infinite;display:inline-block;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.footer{text-align:center;font-size:11px;color:#aaa;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-box">BGT</div>
+    <div>
+      <div class="logo-name">BIG GUS TRACTOR &amp; EQUIPMENT</div>
+      <div class="logo-sub">Customer Authorization &amp; Approval</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="main-wrap">
+  <div class="loading">
+    <div class="loading-icon">⚙</div>
+    <div>Loading your authorization form…</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── READ PARAMS ─────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const approvalId = params.get('id');
+const xdb = params.get('xdb');
+
+let DB_URL = '';
+try { if(xdb) DB_URL = decodeURIComponent(escape(atob(xdb))); } catch(e) {
+  try { if(xdb) DB_URL = atob(xdb); } catch(e2) {}
+}
+
+const wrap = document.getElementById('main-wrap');
+
+function showError(msg) {
+  wrap.innerHTML = `<div class="error-card">
+    <div class="error-icon">⚠️</div>
+    <div class="error-title">Unable to Load Authorization</div>
+    <div class="error-msg">${msg}</div>
+    <a href="tel:8509377009" class="call-btn">📞 Call 850-937-7009</a>
+  </div>
+  <div class="footer">Big Gus Tractor &amp; Equipment · 1490 W Hwy 98, Mary Esther FL 32569</div>`;
+}
+
+function fmtDate(iso) {
+  if(!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); } catch(e){return iso;}
+}
+
+// ── MAIN ────────────────────────────────────────────────
+async function init() {
+  if(!approvalId || !DB_URL) {
+    showError(`This link is invalid or has expired. Please contact Big Gus Tractor for a new authorization link.<br><br><small style="color:#aaa;">Debug: id=${approvalId||'missing'} · db=${DB_URL?'found':'missing'}</small>`);
+    return;
+  }
+
+  try {
+    const r = await fetch(`${DB_URL}/approvals/${approvalId}.json`);
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    if(!data) throw new Error('No data');
+
+    // Already approved?
+    if(data.status === 'approved') {
+      wrap.innerHTML = `<div class="success">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Already Approved</div>
+        <div class="success-detail">Signed by <strong>${data.approvalName}</strong></div>
+        <div class="success-detail">Date: <strong>${fmtDate(data.approvalDate)}</strong></div>
+        ${data.approvalTotal ? `<div class="success-detail">Total Authorized: <strong>$${parseFloat(data.approvalTotal).toFixed(2)}</strong></div>` : ''}
+        <div class="success-box">This authorization has already been submitted. You may close this window.</div>
+      </div>
+      <div class="footer">Big Gus Tractor &amp; Equipment · 850-937-7009 · biggustractor.com</div>`;
+      return;
+    }
+
+    // Show the authorization form
+    renderForm(data);
+
+  } catch(e) {
+    showError('Could not load the authorization form. Please check your internet connection and try again, or call Big Gus Tractor at 850-937-7009.');
+  }
+}
+
+function renderForm(data) {
+  const fees = ['Transportation / Delivery Fee','Fuel Surcharge','Service Labor','Parts','Additional Charges'];
+
+  wrap.innerHTML = `
+    <div style="background:#fffde7;border-left:4px solid #C9A84C;border-radius:4px;padding:12px 14px;font-size:13px;color:#555;margin-bottom:14px;line-height:1.6;">
+      <strong>IMPORTANT:</strong> Please read this entire document carefully before signing. By signing below you confirm that you have read, understood, and agreed to all terms and conditions.
+    </div>
+
+    <!-- JOB INFO -->
+    <div class="card">
+      <div class="card-hdr">Job Information</div>
+      <div class="card-body">
+        ${[
+          ['BOL / Order #', data.bol||data.id||'—'],
+          ['Customer', data.customer||'—'],
+          ['Phone', data.phone||'—'],
+          ['Equipment', data.equipment||'—'],
+          ['Serial #', data.serial||'—'],
+          ['Service Type', data.jobType||'—'],
+          ['Pickup Location', data.pickup||'—'],
+          ['Delivery / Drop-Off', data.dropoff||'—'],
+          ['Scheduled Date', data.scheduledDate ? `${data.scheduledDate}${data.scheduledTime?' · '+data.scheduledTime:''}` : '—'],
+        ].map(([k,v]) => `<div class="kv"><span class="kk">${k}</span><span class="kv-val">${v}</span></div>`).join('')}
+        ${data.notes ? `<div class="note-box"><strong>Special Instructions:</strong> ${data.notes}</div>` : ''}
+      </div>
+    </div>
+
+    <!-- FEE AUTHORIZATION -->
+    <div class="card">
+      <div class="card-hdr">Fee Authorization</div>
+      <div class="card-body">
+        <div style="font-size:12px;color:#777;margin-bottom:12px;">Enter amounts and initial each line to authorize. Final charges may vary by up to 10%.</div>
+        ${fees.map((lbl,i) => `
+          <div class="fee-row">
+            <div class="fee-lbl">${lbl}</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-right:8px;">
+              <input type="number" class="fee-inp" id="fee-${i}" placeholder="0.00" step="0.01" min="0" oninput="updateTotal()">
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <input type="text" class="init-inp" id="init-${i}" placeholder="Initial" maxlength="5">
+              <div class="init-lbl">Initial</div>
+            </div>
+          </div>`).join('')}
+        <div class="total-row">
+          <span>Total Authorized</span>
+          <span id="fee-total">$0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIABILITY TERMS -->
+    <div class="card">
+      <div class="card-hdr">Liability &amp; Terms</div>
+      <div class="card-body">
+        <div class="terms">
+          <strong>1. Condition at Pickup:</strong> Customer acknowledges equipment was inspected at pickup. Pre-existing damage noted on the Driver & Delivery Checklist is excluded from this agreement.<br><br>
+          <strong>2. Liability During Transport:</strong> Big Gus Tractor & Equipment exercises reasonable care in transportation. Liability is limited to the lesser of actual repair cost or fair market value. Not liable for pre-existing conditions, acts of God, or improper loading by customer.<br><br>
+          <strong>3. Customer's Insurance:</strong> Customer is encouraged to maintain their own insurance on equipment being transported. Customer's equipment insurance is primary.<br><br>
+          <strong>4. Maximum Liability:</strong> In no event shall Big Gus Tractor & Equipment be liable for indirect, consequential, or punitive damages including loss of income or loss of use.<br><br>
+          <strong>5. Claims Procedure:</strong> Damage claims must be reported within 24 hours of delivery in writing to 1490 W Hwy 98, Mary Esther FL 32569.<br><br>
+          <strong>6. Service Work:</strong> 90-day labor warranty on all completed work. Customer will be contacted before charges exceed estimate by more than 10%. Equipment must be picked up within 14 days of completion notice.<br><br>
+          <strong>7. Governing Law:</strong> State of Florida. Disputes resolved by binding arbitration in Okaloosa County, FL.
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="card">
+      <div class="card-hdr">Your Digital Signature</div>
+      <div class="card-body">
+        <div style="font-size:13px;color:#555;margin-bottom:16px;line-height:1.6;">By entering your full legal name and tapping <strong>Approve &amp; Sign</strong>, you confirm that you have read and agree to all terms above, and authorize the fees listed.</div>
+        <div style="margin-bottom:14px;">
+          <label class="fl" for="sig-name">Full Legal Name <span style="color:#c62828;">*</span></label>
+          <input type="text" id="sig-name" class="sig-input" placeholder="Type your full legal name" autocomplete="name">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label class="fl" for="sig-date">Today's Date</label>
+          <input type="text" id="sig-date" class="date-input" value="${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}" readonly>
+        </div>
+        <div class="err" id="sig-err">Please enter your full legal name to sign.</div>
+        <button class="submit-btn" id="submit-btn" onclick="submitApproval()">✓ &nbsp;APPROVE &amp; SIGN</button>
+        <div class="esign-note">Your name and timestamp are recorded as your electronic signature under the federal ESIGN Act (15 U.S.C. § 7001). This is a legally binding agreement.</div>
+      </div>
+    </div>
+
+    <div class="footer">Big Gus Tractor &amp; Equipment &nbsp;·&nbsp; 1490 W Hwy 98, Mary Esther FL 32569 &nbsp;·&nbsp; 850-937-7009 &nbsp;·&nbsp; biggustractor.com</div>
+  `;
+}
+
+function updateTotal() {
+  let total = 0;
+  for(let i = 0; i < 5; i++) {
+    const el = document.getElementById('fee-' + i);
+    if(el) total += parseFloat(el.value) || 0;
+  }
+  const el = document.getElementById('fee-total');
+  if(el) el.textContent = '$' + total.toFixed(2);
+  return total;
+}
+
+async function submitApproval() {
+  const name = (document.getElementById('sig-name').value || '').trim();
+  const errEl = document.getElementById('sig-err');
+  const btn = document.getElementById('submit-btn');
+
+  if(!name) {
+    errEl.style.display = 'block';
+    document.getElementById('sig-name').focus();
+    return;
+  }
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Collect fees
+  const feeLabels = ['Transportation / Delivery Fee','Fuel Surcharge','Service Labor','Parts','Additional Charges'];
+  const fees = feeLabels.map((lbl, i) => ({
+    label: lbl,
+    amount: parseFloat((document.getElementById('fee-' + i) || {}).value) || 0,
+    initial: (document.getElementById('init-' + i) || {}).value || ''
+  }));
+  const total = fees.reduce((a, f) => a + f.amount, 0);
+
+  const payload = {
+    status: 'approved',
+    approvalName: name,
+    approvalDate: new Date().toISOString(),
+    approvalTotal: total,
+    fees,
+    userAgent: navigator.userAgent,
+    approvedAt: new Date().toISOString()
+  };
+
+  try {
+    const r = await fetch(`${DB_URL}/approvals/${approvalId}.json`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+
+    // Success!
+    wrap.innerHTML = `<div class="success">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Authorization Approved!</div>
+      <div class="success-detail">Signed by: <strong>${name}</strong></div>
+      <div class="success-detail">Date: <strong>${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</strong></div>
+      ${total > 0 ? `<div class="success-detail">Total Authorized: <strong>$${total.toFixed(2)}</strong></div>` : ''}
+      <div class="success-box">
+        Big Gus Tractor &amp; Equipment has been notified of your approval.<br>
+        Please keep this confirmation for your records.<br><br>
+        Questions? Call us at <strong>850-937-7009</strong>
+      </div>
+    </div>
+    <div class="footer">Big Gus Tractor &amp; Equipment &nbsp;·&nbsp; 1490 W Hwy 98, Mary Esther FL 32569 &nbsp;·&nbsp; 850-937-7009 &nbsp;·&nbsp; biggustractor.com</div>`;
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '✓  APPROVE & SIGN';
+    alert('Error submitting approval. Please check your internet connection and try again, or call 850-937-7009.');
+  }
+}
+
+// Start
+init();
+</script>
+</body>
+</html>
