@@ -395,6 +395,50 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
 .fu-sum-num{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;line-height:1;}
 .fu-sum-lbl{font-size:10px;color:var(--tx3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
 
+/* ── MAINTENANCE ─────────────────────────────────────── */
+.maint-card{background:var(--g2);border:1px solid var(--bdr);border-radius:9px;overflow:hidden;margin-bottom:10px;}
+.maint-veh{background:var(--g3);padding:10px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);}
+.maint-veh-name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;color:var(--tx);}
+.maint-veh-sub{font-size:11px;color:var(--tx3);margin-top:1px;}
+.maint-item{padding:10px 13px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;cursor:pointer;}
+.maint-item:last-child{border-bottom:none;}
+.maint-item:active{background:var(--g3);}
+.maint-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.maint-ok{background:var(--td);}
+.maint-due{background:var(--gd);}
+.maint-over{background:var(--rd);}
+.maint-info{flex:1;min-width:0;}
+.maint-name{font-size:14px;font-weight:600;color:var(--tx);}
+.maint-detail{font-size:11px;color:var(--tx3);margin-top:2px;}
+.maint-badge{font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+.maint-badge.ok{background:var(--td);color:var(--teal);border:1px solid rgba(46,168,122,.3);}
+.maint-badge.due{background:var(--gd);color:var(--gold);border:1px solid var(--gg);}
+.maint-badge.over{background:var(--rd);color:var(--red);border:1px solid rgba(217,79,79,.3);}
+.maint-prog{height:3px;background:var(--bdr2);border-radius:2px;margin-top:4px;overflow:hidden;}
+.maint-prog-fill{height:100%;border-radius:2px;transition:width .4s;}
+
+/* ── INVOICE ─────────────────────────────────────────── */
+.inv-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(46,168,122,.13);border:1px solid rgba(46,168,122,.3);color:var(--teal);border-radius:6px;padding:7px 13px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+.inv-btn svg{width:13px;height:13px;}
+
+/* ── PHOTO UPLOAD ────────────────────────────────────── */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
+.photo-thumb{aspect-ratio:1;border-radius:6px;overflow:hidden;background:var(--g3);border:1px solid var(--bdr);cursor:pointer;position:relative;}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;}
+.photo-thumb .del-photo{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:20px;height:20px;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.photo-add{aspect-ratio:1;border-radius:6px;border:2px dashed var(--bdr2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--tx3);font-size:10px;text-align:center;gap:4px;}
+.photo-add svg{width:20px;height:20px;}
+
+/* ── SMS ─────────────────────────────────────────────── */
+.sms-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(74,127,201,.13);border:1px solid rgba(74,127,201,.3);color:var(--blue);border-radius:6px;padding:7px 13px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+.sms-btn svg{width:13px;height:13px;}
+
+/* ── SIGNATURE PAD ───────────────────────────────────── */
+.sig-pad-wrap{border:2px solid var(--bdr);border-radius:8px;overflow:hidden;margin:8px 0;position:relative;background:#fff;}
+.sig-pad-wrap canvas{display:block;width:100%;touch-action:none;}
+.sig-pad-label{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:10px;color:#ccc;pointer-events:none;white-space:nowrap;}
+.sig-clear{background:var(--g3);border:1px solid var(--bdr);border-radius:6px;color:var(--tx3);font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;cursor:pointer;margin-top:4px;}
+
 ::-webkit-scrollbar{width:0;}
 </style>
 </head>
@@ -624,6 +668,12 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
       </div>
     </div>
 
+    <!-- MAINTENANCE -->
+    <div id="pg-maintenance" class="page">
+      <div class="shdr" style="display:flex;align-items:center;justify-content:space-between;"><span>Fleet Maintenance</span><span style="font-size:10px;color:var(--tx3);font-weight:400;letter-spacing:0;">Tap item to log service</span></div>
+      <div id="maint-list" style="padding:4px 13px;"></div>
+    </div>
+
     <!-- REPORTS -->
     <div id="pg-reports" class="page">
       <div class="rperiod" id="rpt-chips">
@@ -643,6 +693,7 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
     <button class="nav-btn" id="nav-drivers" onclick="showPage('drivers')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Drivers</button>
     <button class="nav-btn" id="nav-new" onclick="showPage('new')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>New Job</button>
     <button class="nav-btn" id="nav-reports" onclick="showPage('reports')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</button>
+    <button class="nav-btn" id="nav-maintenance" onclick="showPage('maintenance')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>Maint<span class="nav-bdg" id="maint-bdg" style="display:none"></span></button>
   </div>
 </div>
 
@@ -687,20 +738,17 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
         </div>
       </div>
       <div class="dsec" id="jd-notes-sec"><div class="dk" style="margin-bottom:5px;">Notes</div><div class="dnote" id="jd-notes"></div></div>
-      <div class="dsec" style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="print-btn" onclick="printJobSheet()">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print Transport Sheet
-        </button>
-        <button class="auth-btn" onclick="printAuthForm()">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
-          Print Authorization
-        </button>
-        <button class="link-btn" onclick="generateApprovalLink()">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-          Send Approval Link
-        </button>
+      <div class="dsec" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="print-btn" onclick="printJobSheet()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print Sheet</button>
+        <button class="auth-btn" onclick="printAuthForm()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Auth Form</button>
+        <button class="link-btn" onclick="generateApprovalLink()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Approval Link</button>
+        <button class="sms-btn" onclick="sendSMSApproval()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Text Link</button>
+        <button class="inv-btn" onclick="openInvoice()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>Invoice</button>
+        <button class="print-btn" style="background:rgba(46,168,122,.13);border-color:rgba(46,168,122,.3);color:var(--teal);" onclick="openPhotos()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Photos</button>
+        <button class="print-btn" style="background:rgba(74,127,201,.13);border-color:rgba(74,127,201,.3);color:var(--blue);" onclick="openSigPad()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Signature</button>
       </div>
+      <div class="dsec" id="jd-photos-sec" style="display:none;"><div class="fl" style="margin-bottom:6px;">Attached Photos</div><div class="photo-grid" id="jd-photos-grid"></div></div>
+      <div class="dsec" id="jd-sig-sec" style="display:none;"><div class="fl" style="margin-bottom:6px;">Customer Signature</div><div id="jd-sig-display"></div></div>
       <div class="dsec" id="jd-appr-sec" style="display:none;">
         <div class="fl" style="margin-bottom:6px;">Customer Approval Status</div>
         <div id="jd-appr-status"></div>
@@ -788,7 +836,72 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
   </div>
 </div>
 
-<!-- ════ SETTINGS SHEET ════ -->
+<!-- ════ MAINTENANCE LOG SHEET ════ -->
+<div class="ov" id="maint-sheet" onclick="ovClick(event,'maint-sheet')">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div class="shhdr"><div><div class="shtitle" id="ms-title">Log Service</div><div class="shid" id="ms-sub"></div></div><div class="xbtn" onclick="closeSheet('maint-sheet')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="shbody"><div style="padding:12px 13px 40px;display:flex;flex-direction:column;gap:12px;">
+      <div class="fg"><div class="fl">Service Date</div><input class="fi" id="ms-date" type="date"></div>
+      <div class="fg"><div class="fl">Odometer at Service (mi)</div><input class="fi" id="ms-odo" type="number" placeholder="0" min="0"></div>
+      <div class="fg"><div class="fl">Service Cost ($)</div><input class="fi" id="ms-cost" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Shop / Performed By</div><input class="fi" id="ms-shop" placeholder="e.g. Big Gus Shop, Jiffy Lube"></div>
+      <div class="fg"><div class="fl">Notes</div><textarea class="fta" id="ms-notes" placeholder="Parts used, findings, next service notes…"></textarea></div>
+      <button class="btn btn-gold btn-full" onclick="saveMaintLog()">Save Service Record</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════ PHOTO VIEWER SHEET ════ -->
+<div class="ov" id="photo-sheet" onclick="ovClick(event,'photo-sheet')">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div class="shhdr"><div class="shtitle">Job Photos</div><div class="xbtn" onclick="closeSheet('photo-sheet')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="shbody"><div style="padding:12px 13px 40px;">
+      <div style="font-size:12px;color:var(--tx3);margin-bottom:10px;">Attach photos of equipment condition at pickup or delivery. Photos are stored with the job.</div>
+      <div class="photo-grid" id="photo-grid"></div>
+      <input type="file" id="photo-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(event)">
+    </div></div>
+  </div>
+</div>
+
+<!-- ════ SIGNATURE SHEET ════ -->
+<div class="ov" id="sig-sheet" onclick="ovClick(event,'sig-sheet')">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div class="shhdr"><div><div class="shtitle">Customer Signature</div><div class="shid" id="sig-job-id"></div></div><div class="xbtn" onclick="closeSheet('sig-sheet')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="shbody"><div style="padding:12px 13px 40px;">
+      <div style="font-size:13px;color:var(--tx2);margin-bottom:12px;">Have the customer sign below using their finger or stylus. Signature is saved to the job record.</div>
+      <div class="fg"><div class="fl">Customer Full Name</div><input class="fi" id="sig-name-inp" placeholder="Type customer full name"></div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);margin-bottom:5px;">Signature</div>
+      <div class="sig-pad-wrap"><canvas id="sig-canvas" height="160"></canvas><span class="sig-pad-label">Sign here</span></div>
+      <button class="sig-clear" onclick="clearSig()">Clear Signature</button>
+      <div style="height:12px;"></div>
+      <button class="btn btn-gold btn-full" onclick="saveSig()">Save Signature</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════ INVOICE SHEET ════ -->
+<div class="ov" id="inv-sheet" onclick="ovClick(event,'inv-sheet')">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div class="shhdr"><div class="shtitle">Generate Invoice</div><div class="xbtn" onclick="closeSheet('inv-sheet')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="shbody"><div style="padding:12px 13px 40px;display:flex;flex-direction:column;gap:11px;">
+      <div class="fdiv">Line Items</div>
+      <div class="fg"><div class="fl">Transportation / Delivery Fee ($)</div><input class="fi" id="inv-transport" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Fuel Surcharge ($)</div><input class="fi" id="inv-fuel" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Service Labor ($)</div><input class="fi" id="inv-labor" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Parts ($)</div><input class="fi" id="inv-parts" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Other Charges ($)</div><input class="fi" id="inv-other" type="number" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="fg"><div class="fl">Other Description</div><input class="fi" id="inv-other-desc" placeholder="Describe other charges"></div>
+      <div class="fg"><div class="fl">Tax Rate (%)</div><input class="fi" id="inv-tax" type="number" placeholder="0.00" step="0.01" min="0" value="0"></div>
+      <div class="fg"><div class="fl">Payment Terms</div><select class="fs" id="inv-terms"><option>Due on Receipt</option><option>Net 15</option><option>Net 30</option><option>Net 60</option></select></div>
+      <div class="fg"><div class="fl">Invoice Notes</div><textarea class="fta" id="inv-notes" placeholder="Thank you for your business…"></textarea></div>
+      <button class="btn btn-gold btn-full" onclick="printInvoice()">Print Invoice</button>
+    </div></div>
+  </div>
+</div>
 <div class="ov" id="set-sheet" onclick="ovClick(event,'set-sheet')">
   <div class="sheet">
     <div class="sh"></div>
@@ -1218,6 +1331,7 @@ function showPage(p){
   if(p==='drivers')renderDrivers();
   if(p==='new')initNewJob();
   if(p==='reports')renderReports();
+  if(p==='maintenance')renderMaintenance();
 }
 
 // ══════════════════════════════════════════════════════
@@ -1394,6 +1508,15 @@ function openJob(id){
   const rs=document.getElementById('jd-reassign-sec');if(rs)rs.style.display=canReassign?'':'none';
   const ms=document.getElementById('jd-miles-sec');if(ms)ms.style.display=canLogMileage?'':'none';
   const delBtn=document.querySelector('#job-sheet .btn-red');if(delBtn)delBtn.style.display=canDelete?'':'none';
+
+  // Photos
+  const jps=document.getElementById('jd-photos-sec');
+  const jpg=document.getElementById('jd-photos-grid');
+  if(j.photos&&j.photos.length){jps.style.display='';renderPhotoGrid('jd-photos-grid',j.photos,false);}else{jps.style.display='none';}
+  // Signature
+  const jss=document.getElementById('jd-sig-sec');
+  const jsd=document.getElementById('jd-sig-display');
+  if(j.customerSig){jss.style.display='';jsd.innerHTML=`<img src="${j.customerSig}" style="max-width:200px;max-height:70px;border:1px solid var(--bdr);border-radius:6px;"><div style="font-size:11px;color:var(--tx3);margin-top:4px;">${j.customerSigName||''} · ${j.customerSigDate?fmtD(j.customerSigDate):'—'}</div>`;}else{jss.style.display='none';}
 
   // Approval status
   const apprSec=document.getElementById('jd-appr-sec');
@@ -2701,6 +2824,323 @@ function printBlankOrder() {
     <div style="margin-top:10px;padding-top:8px;border-top:1px solid #ccc;font-size:10px;color:#999;text-align:center;">Big Gus Tractor &amp; Equipment &nbsp;|&nbsp; 1490 W Hwy 98, Mary Esther FL 32569 &nbsp;|&nbsp; 850-937-7009 &nbsp;|&nbsp; biggustractor.com &nbsp;|&nbsp; BOL: ${bolNum} &nbsp;|&nbsp; Keep completed forms on file.</div>
   </div></div></body></html>`;
   printHTML(html);
+}
+
+function sendApprovalLink(){generateApprovalLink();}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: MAINTENANCE TRACKING
+// ══════════════════════════════════════════════════════
+const MAINT_ITEMS=[
+  {id:'oil',name:'Oil & Filter Change',icon:'🛢',intervalMi:5000,intervalDays:90},
+  {id:'air',name:'Air Filter',icon:'💨',intervalMi:15000,intervalDays:365},
+  {id:'fuel',name:'Fuel Filter',icon:'⛽',intervalMi:20000,intervalDays:365},
+  {id:'tires',name:'Tire Rotation',icon:'🔄',intervalMi:7500,intervalDays:180},
+  {id:'brakes',name:'Brake Inspection',icon:'🛑',intervalMi:20000,intervalDays:365},
+  {id:'trans',name:'Transmission Service',icon:'⚙',intervalMi:50000,intervalDays:730},
+  {id:'cool',name:'Coolant Flush',icon:'🌡',intervalMi:60000,intervalDays:730},
+  {id:'dot',name:'Annual DOT Inspection',icon:'📋',intervalMi:null,intervalDays:365},
+  {id:'safety',name:'Safety Check',icon:'✅',intervalMi:null,intervalDays:90},
+];
+
+let currentMaintDriver=null,currentMaintItem=null;
+
+function renderMaintenance(){
+  const drivers=(DB.drivers||[]).filter(d=>d.vehicle);
+  const el=document.getElementById('maint-list');
+  if(!drivers.length){el.innerHTML=`<div class="empty"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><p>Add drivers with vehicles to track maintenance.</p></div>`;return;}
+  
+  let overdueCount=0;
+  el.innerHTML=drivers.map(d=>{
+    const logs=((DB.maintenance||{})[d.id])||{};
+    const jobs=(DB.jobs||[]).filter(j=>j.driverId===d.id&&j.milesAct);
+    const totalMi=jobs.reduce((a,j)=>a+(j.milesAct||0),0);
+    const odometer=parseInt((DB.fleet||[]).find(f=>f.id===d.id)?.odometer||0)+totalMi;
+    
+    const items=MAINT_ITEMS.map(item=>{
+      const log=logs[item.id]||{};
+      const lastDate=log.date?new Date(log.date):null;
+      const lastMi=log.odometer||0;
+      const today=new Date();
+      
+      let status='ok',pct=0,detail='';
+      
+      if(item.intervalDays&&lastDate){
+        const daysSince=Math.floor((today-lastDate)/(1000*60*60*24));
+        const daysPct=daysSince/item.intervalDays;
+        if(daysPct>=1){status='over';}
+        else if(daysPct>=0.8){status='due';}
+        pct=Math.min(100,daysPct*100);
+        detail=`${daysSince}d ago · due every ${item.intervalDays}d`;
+      }else if(!lastDate){
+        status='due';pct=100;detail='No service on record';
+      }
+      
+      if(item.intervalMi&&odometer&&lastMi){
+        const miSince=odometer-lastMi;
+        const miPct=miSince/item.intervalMi;
+        if(miPct>=1){status='over';}
+        else if(miPct>=0.8&&status==='ok'){status='due';}
+        pct=Math.max(pct,Math.min(100,miPct*100));
+        detail+=`${detail?' · ':''}${miSince.toLocaleString()}mi since service`;
+      }
+      
+      if(status==='over')overdueCount++;
+      
+      const cls={ok:'ok',due:'due',over:'over'}[status];
+      const icon={ok:'✅',due:'⚠️',over:'🔴'}[status];
+      return`<div class="maint-item" onclick="openMaintLog('${d.id}','${item.id}')">
+        <div class="maint-icon maint-${status}" style="font-size:18px;">${item.icon}</div>
+        <div class="maint-info">
+          <div class="maint-name">${item.name}</div>
+          <div class="maint-detail">${detail||'Tap to log service'}</div>
+          <div class="maint-prog"><div class="maint-prog-fill" style="width:${pct}%;background:${status==='over'?'var(--red)':status==='due'?'var(--gold)':'var(--teal)'};"></div></div>
+        </div>
+        <span class="maint-badge ${cls}">${icon} ${status==='ok'?'OK':status==='due'?'Due Soon':'Overdue'}</span>
+      </div>`;
+    }).join('');
+    
+    return`<div class="maint-card">
+      <div class="maint-veh">
+        <div><div class="maint-veh-name">${d.vehicle}</div><div class="maint-veh-sub">${d.name} · Est. ${odometer.toLocaleString()} mi</div></div>
+        <span class="bdg ${overdueCount>0?'bc':'bv'}">${overdueCount>0?overdueCount+' Overdue':'All OK'}</span>
+      </div>
+      ${items}
+    </div>`;
+  }).join('');
+  
+  // Update badge
+  const b=document.getElementById('maint-bdg');
+  if(overdueCount>0){b.textContent=overdueCount;b.style.display='';}else{b.style.display='none';}
+}
+
+function openMaintLog(driverId,itemId){
+  currentMaintDriver=driverId;currentMaintItem=itemId;
+  const item=MAINT_ITEMS.find(x=>x.id===itemId);
+  const d=(DB.drivers||[]).find(x=>x.id===driverId);
+  const log=((DB.maintenance||{})[driverId]||{})[itemId]||{};
+  document.getElementById('ms-title').textContent=item?.name||'Log Service';
+  document.getElementById('ms-sub').textContent=d?.vehicle||'';
+  document.getElementById('ms-date').value=log.date||new Date().toISOString().slice(0,10);
+  document.getElementById('ms-odo').value=log.odometer||'';
+  document.getElementById('ms-cost').value=log.cost||'';
+  document.getElementById('ms-shop').value=log.shop||'';
+  document.getElementById('ms-notes').value=log.notes||'';
+  openSheet('maint-sheet');
+}
+
+function saveMaintLog(){
+  if(!currentMaintDriver||!currentMaintItem)return;
+  DB.maintenance=DB.maintenance||{};
+  DB.maintenance[currentMaintDriver]=DB.maintenance[currentMaintDriver]||{};
+  DB.maintenance[currentMaintDriver][currentMaintItem]={
+    date:document.getElementById('ms-date').value,
+    odometer:parseInt(document.getElementById('ms-odo').value)||0,
+    cost:parseFloat(document.getElementById('ms-cost').value)||0,
+    shop:document.getElementById('ms-shop').value.trim(),
+    notes:document.getElementById('ms-notes').value.trim(),
+    loggedAt:ts(),loggedBy:currentUser?.username||'dispatch'
+  };
+  syncNow();closeSheet('maint-sheet');renderMaintenance();
+  showToast('Service record saved');
+}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: SMS TEXT LINK
+// ══════════════════════════════════════════════════════
+function sendSMSApproval(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  if(!j.approvalLink){showToast('Generate approval link first');return;}
+  const custRecord=(DB.customers||[]).find(c=>c.id===j.customerId);
+  const phone=custRecord?.phone?.replace(/\D/g,'')||'';
+  const msg=`Big Gus Tractor & Equipment needs your authorization for job ${j.bol||j.id}. Please review and sign here: ${j.approvalLink}`;
+  if(phone){
+    window.open(`sms:${phone}?body=${encodeURIComponent(msg)}`);
+  }else{
+    // No phone — just copy the message
+    navigator.clipboard.writeText(msg).then(()=>showToast('Message copied — paste into your SMS app'));
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: PHOTO UPLOAD
+// ══════════════════════════════════════════════════════
+function openPhotos(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  renderPhotoGrid('photo-grid',j.photos||[],true);
+  openSheet('photo-sheet');
+}
+
+function renderPhotoGrid(elId,photos,editable){
+  const el=document.getElementById(elId);if(!el)return;
+  el.innerHTML=(photos||[]).map((p,i)=>`<div class="photo-thumb"><img src="${p}" onclick="viewPhoto('${p}')">
+    ${editable?`<button class="del-photo" onclick="deletePhoto(${i})">✕</button>`:''}</div>`).join('');
+  if(editable){el.innerHTML+=`<div class="photo-add" onclick="document.getElementById('photo-input').click()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Add Photo</span></div>`;}
+}
+
+function handlePhotoUpload(event){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  j.photos=j.photos||[];
+  const files=Array.from(event.target.files);
+  let processed=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      j.photos.push(e.target.result);
+      processed++;
+      if(processed===files.length){
+        syncNow();renderPhotoGrid('photo-grid',j.photos,true);
+        // Update job detail view
+        const jps=document.getElementById('jd-photos-sec');
+        const jpg=document.getElementById('jd-photos-grid');
+        if(jps&&jpg){jps.style.display='';renderPhotoGrid('jd-photos-grid',j.photos,false);}
+        showToast(`${files.length} photo${files.length>1?'s':''} added`);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value='';
+}
+
+function deletePhoto(idx){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j||!j.photos)return;
+  j.photos.splice(idx,1);syncNow();
+  renderPhotoGrid('photo-grid',j.photos,true);showToast('Photo removed');
+}
+
+function viewPhoto(src){window.open(src,'_blank');}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: SIGNATURE PAD
+// ══════════════════════════════════════════════════════
+let sigCanvas=null,sigCtx=null,sigDrawing=false;
+
+function openSigPad(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  document.getElementById('sig-job-id').textContent=j.bol||j.id;
+  document.getElementById('sig-name-inp').value=j.customerSigName||'';
+  openSheet('sig-sheet');
+  setTimeout(()=>{
+    sigCanvas=document.getElementById('sig-canvas');
+    sigCanvas.width=sigCanvas.offsetWidth*2;
+    sigCanvas.height=320;
+    sigCtx=sigCanvas.getContext('2d');
+    sigCtx.scale(2,2);
+    sigCtx.strokeStyle='#1B3A1B';sigCtx.lineWidth=2.5;sigCtx.lineCap='round';sigCtx.lineJoin='round';
+    // If existing sig, draw it
+    if(j.customerSig){const img=new Image();img.onload=()=>sigCtx.drawImage(img,0,0,sigCanvas.offsetWidth,160);img.src=j.customerSig;}
+    // Events
+    const pos=(e)=>{const r=sigCanvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left),y:(t.clientY-r.top)};};
+    sigCanvas.onmousedown=sigCanvas.ontouchstart=(e)=>{e.preventDefault();sigDrawing=true;const p=pos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);};
+    sigCanvas.onmousemove=sigCanvas.ontouchmove=(e)=>{e.preventDefault();if(!sigDrawing)return;const p=pos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();};
+    sigCanvas.onmouseup=sigCanvas.ontouchend=()=>{sigDrawing=false;};
+  },300);
+}
+
+function clearSig(){if(sigCtx&&sigCanvas)sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);}
+
+function saveSig(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  const name=document.getElementById('sig-name-inp').value.trim();
+  if(!name){showToast('Enter customer name');return;}
+  j.customerSigName=name;
+  j.customerSig=sigCanvas.toDataURL('image/png');
+  j.customerSigDate=ts();
+  j.log=j.log||[];j.log.push({time:ts(),msg:`Customer signature captured — ${name}`});
+  syncNow();closeSheet('sig-sheet');openJob(currentJobId);showToast('Signature saved');
+}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: INVOICE GENERATOR
+// ══════════════════════════════════════════════════════
+function openInvoice(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  // Pre-fill fuel cost if available
+  if(j.fuelCost)document.getElementById('inv-fuel').value=j.fuelCost;
+  openSheet('inv-sheet');
+}
+
+function printInvoice(){
+  const j=(DB.jobs||[]).find(x=>x.id===currentJobId);if(!j)return;
+  const custRecord=(DB.customers||[]).find(c=>c.id===j.customerId);
+  const drv=(DB.drivers||[]).find(d=>d.id===j.driverId);
+  const today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const invNum='INV-'+j.bol?.replace('BGT-','')||j.id;
+  
+  const transport=parseFloat(document.getElementById('inv-transport').value)||0;
+  const fuel=parseFloat(document.getElementById('inv-fuel').value)||0;
+  const labor=parseFloat(document.getElementById('inv-labor').value)||0;
+  const parts=parseFloat(document.getElementById('inv-parts').value)||0;
+  const other=parseFloat(document.getElementById('inv-other').value)||0;
+  const otherDesc=document.getElementById('inv-other-desc').value||'Other Charges';
+  const taxRate=parseFloat(document.getElementById('inv-tax').value)||0;
+  const terms=document.getElementById('inv-terms').value;
+  const notes=document.getElementById('inv-notes').value;
+  
+  const subtotal=transport+fuel+labor+parts+other;
+  const tax=subtotal*(taxRate/100);
+  const total=subtotal+tax;
+  
+  const lines=[
+    transport>0?['Transportation / Delivery Fee',transport]:null,
+    fuel>0?['Fuel Surcharge',fuel]:null,
+    labor>0?['Service Labor',labor]:null,
+    parts>0?['Parts',parts]:null,
+    other>0?[otherDesc,other]:null,
+  ].filter(Boolean);
+
+  const html=printBase()+`<div class="page">${bgtHeader()}
+  <div style="padding:16px 24px 24px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;margin-top:8px;">
+      <div><div style="font-size:28px;font-weight:700;color:#1B3A1B;">INVOICE</div><div style="font-size:12px;color:#777;margin-top:3px;">1490 W Hwy 98, Mary Esther FL 32569 · 850-937-7009</div></div>
+      <div style="text-align:right;">
+        <div style="font-family:'Courier New',monospace;font-size:16px;font-weight:700;color:#1B3A1B;background:#f0f5f0;padding:6px 14px;border-radius:5px;border:1.5px solid #1B3A1B;">${invNum}</div>
+        <div style="font-size:12px;color:#777;margin-top:4px;">Date: ${today}</div>
+        <div style="font-size:12px;color:#777;">Terms: ${terms}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+      <div style="background:#f4f7f4;border-radius:6px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#777;margin-bottom:6px;">Bill To</div>
+        <div style="font-size:14px;font-weight:700;color:#111;">${j.customer}</div>
+        ${custRecord?.address?`<div style="font-size:12px;color:#555;margin-top:2px;">${custRecord.address}</div>`:''}
+        ${custRecord?.phone?`<div style="font-size:12px;color:#555;">${custRecord.phone}</div>`:''}
+        ${custRecord?.email?`<div style="font-size:12px;color:#555;">${custRecord.email}</div>`:''}
+      </div>
+      <div style="background:#f4f7f4;border-radius:6px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#777;margin-bottom:6px;">Job Details</div>
+        <div style="font-size:12px;color:#555;"><strong>BOL:</strong> ${j.bol||j.id}</div>
+        <div style="font-size:12px;color:#555;"><strong>Equipment:</strong> ${[j.equipBrand,j.model].filter(Boolean).join(' ')||'—'}</div>
+        <div style="font-size:12px;color:#555;"><strong>Serial:</strong> ${j.serial||'—'}</div>
+        <div style="font-size:12px;color:#555;"><strong>Service:</strong> ${{delivery:'Delivery',pickup:'Pickup',service:'Service',demo:'Demo',transfer:'Transfer'}[j.jobType]||j.jobType||'—'}</div>
+        <div style="font-size:12px;color:#555;"><strong>Driver:</strong> ${drv?drv.name:'—'}</div>
+        ${j.scheduledDate?`<div style="font-size:12px;color:#555;"><strong>Date:</strong> ${j.scheduledDate}</div>`:''}
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:4px;">
+      <tr><th style="background:#1B3A1B;color:#C9A84C;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:left;border:1px solid #1B3A1B;width:65%;">Description</th><th style="background:#1B3A1B;color:#C9A84C;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:right;border:1px solid #1B3A1B;">Amount</th></tr>
+      ${lines.map((l,i)=>`<tr style="${i%2?'background:#f7f9f7':''}"><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;">${l[0]}</td><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;text-align:right;font-family:'Courier New',monospace;">$${l[1].toFixed(2)}</td></tr>`).join('')}
+      ${taxRate>0?`<tr><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;color:#777;">Subtotal</td><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;text-align:right;font-family:'Courier New',monospace;color:#777;">$${subtotal.toFixed(2)}</td></tr>
+      <tr><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;color:#777;">Tax (${taxRate}%)</td><td style="border:1px solid #ddd;padding:9px 10px;font-size:13px;text-align:right;font-family:'Courier New',monospace;color:#777;">$${tax.toFixed(2)}</td></tr>`:''}
+      <tr><td style="background:#1B3A1B;color:#C9A84C;border:1px solid #1B3A1B;padding:11px 10px;font-size:15px;font-weight:700;">TOTAL DUE</td><td style="background:#1B3A1B;color:#C9A84C;border:1px solid #1B3A1B;padding:11px 10px;font-size:15px;font-weight:700;text-align:right;font-family:'Courier New',monospace;">$${total.toFixed(2)}</td></tr>
+    </table>
+    ${notes?`<div style="background:#fffde7;border:1px solid #ffe082;border-radius:4px;padding:10px 12px;font-size:12px;color:#555;margin-top:12px;">${notes}</div>`:''}
+    <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:30px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#777;margin-bottom:28px;">Customer Signature</div>
+        ${j.customerSig?`<img src="${j.customerSig}" style="max-width:200px;max-height:60px;border-bottom:1px solid #999;"><div style="font-size:11px;color:#777;margin-top:4px;">${j.customerSigName||''} · ${j.customerSigDate?new Date(j.customerSigDate).toLocaleDateString('en-US'):'—'}</div>`:`<div style="border-top:1.5px solid #333;padding-top:4px;"><div style="font-size:11px;color:#777;margin-top:4px;">Print Name & Date: ____________________________</div></div>`}
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#777;margin-bottom:28px;">Authorized By</div>
+        <div style="border-top:1.5px solid #333;padding-top:4px;"><div style="font-size:11px;color:#777;margin-top:4px;">Big Gus Tractor & Equipment</div><div style="font-size:11px;color:#777;margin-top:4px;">Date: ___________________________________</div></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:10px;border-top:1px solid #ccc;font-size:10px;color:#999;text-align:center;">
+      Payment due: ${terms} · Returned checks subject to $35 fee · Accounts 30+ days past due subject to 1.5%/month finance charge<br>
+      Big Gus Tractor & Equipment · 1490 W Hwy 98, Mary Esther FL 32569 · 850-937-7009 · biggustractor.com
+    </div>
+  </div></div></body></html>`;
+  closeSheet('inv-sheet');printHTML(html);
 }
 
 async function boot(){
