@@ -395,7 +395,36 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
 .fu-sum-num{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;line-height:1;}
 .fu-sum-lbl{font-size:10px;color:var(--tx3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
 
-/* ── MAINTENANCE ─────────────────────────────────────── */
+/* ── ROUTE PLANNER ───────────────────────────────────── */
+.route-card{background:var(--g2);border:1px solid var(--bdr);border-radius:9px;overflow:hidden;margin-bottom:8px;}
+.route-stop{padding:10px 13px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;}
+.route-stop:last-child{border-bottom:none;}
+.route-num{width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--g1);font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.route-info{flex:1;min-width:0;}
+.route-cust{font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;color:var(--tx);}
+.route-addr{font-size:11px;color:var(--tx3);margin-top:2px;}
+.route-map-btn{display:inline-flex;align-items:center;gap:4px;background:var(--bd);border:1px solid rgba(74,127,201,.3);color:var(--blue);border-radius:5px;padding:5px 10px;font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;text-decoration:none;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+
+/* ── CUSTOMER PORTAL ─────────────────────────────────── */
+.portal-screen{position:fixed;inset:0;background:var(--g1);z-index:500;display:none;flex-direction:column;overflow-y:auto;}
+.portal-screen.open{display:flex;}
+.portal-hdr{background:var(--g2);border-bottom:2px solid var(--gold);padding:16px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.portal-logo{width:42px;height:42px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;color:var(--g1);flex-shrink:0;}
+.portal-body{flex:1;padding:16px;}
+.status-timeline{display:flex;flex-direction:column;gap:0;}
+.tl-step{display:flex;gap:12px;padding:10px 0;}
+.tl-dot{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.tl-circle{width:24px;height:24px;border-radius:50%;border:2px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:11px;background:var(--g2);}
+.tl-circle.done{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tl-circle.active{background:var(--gold);border-color:var(--gold);color:var(--g1);}
+.tl-line{width:2px;flex:1;background:var(--bdr2);margin:3px 0;}
+.tl-line.done{background:var(--teal);}
+.tl-content{flex:1;padding-top:2px;}
+.tl-label{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;}
+.tl-label.done{color:var(--teal);}
+.tl-label.active{color:var(--gold);}
+.tl-label.pending{color:var(--tx3);}
+.tl-time{font-size:11px;color:var(--tx3);margin-top:2px;}
 .maint-card{background:var(--g2);border:1px solid var(--bdr);border-radius:9px;overflow:hidden;margin-bottom:10px;}
 .maint-veh{background:var(--g3);padding:10px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);}
 .maint-veh-name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;color:var(--tx);}
@@ -592,11 +621,15 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
       <div style="display:flex;gap:8px;padding:0 13px 4px;flex-wrap:wrap;">
         <button class="daily-print-btn" style="margin:0;flex:1;" onclick="printDailySheet()">
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print Daily Run Sheet
+          Daily Run Sheet
         </button>
         <button class="daily-print-btn" style="margin:0;flex:1;background:var(--td);border-color:rgba(46,168,122,.3);color:var(--teal);" onclick="printBlankOrder()">
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          Blank Transport Order
+          Blank Order
+        </button>
+        <button class="daily-print-btn" style="margin:0;flex:1;background:var(--bd);border-color:rgba(74,127,201,.3);color:var(--blue);" onclick="showRoutePlanner()">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Route Planner
         </button>
       </div>
       <div id="dash-list" class="card-list"></div>
@@ -829,6 +862,23 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
   </div>
 </div>
 
+<!-- ════ ROUTE PLANNER SHEET ════ -->
+<div class="ov" id="route-sheet" onclick="ovClick(event,'route-sheet')">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div class="shhdr"><div><div class="shtitle">Route Suggestion</div><div class="shid">Today's active jobs optimized by area</div></div><div class="xbtn" onclick="closeSheet('route-sheet')"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="shbody">
+      <div style="padding:10px 13px;">
+        <div class="info-box" style="margin-bottom:12px;">This is a suggested delivery order based on today's jobs. Tap any address to open Google Maps navigation.</div>
+        <div id="route-list"></div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-blue btn-full" onclick="openFullRoute()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Open Full Route in Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ════ MAINTENANCE LOG SHEET ════ -->
 <div class="ov" id="maint-sheet" onclick="ovClick(event,'maint-sheet')">
   <div class="sheet">
@@ -906,10 +956,9 @@ html,body{height:100%;background:var(--g1);color:var(--tx);font-family:'Source S
         <div class="dkv"><span class="dk">Sync</span><span class="dv" id="set-sync-status" style="font-size:12px;color:var(--tx3);"></span></div>
       </div>
       <div class="dsec">
-        <div class="fl" style="margin-bottom:10px;">Monthly Budgets</div>
-        <div class="fg"><div class="fl">Fuel Budget ($)</div><input class="fi" id="set-fuel" type="number" placeholder="600.00" step="0.01" min="0"></div>
-        <div class="fg" style="margin-bottom:10px;"><div class="fl">Mileage Target (mi)</div><input class="fi" id="set-miles" type="number" placeholder="2500" min="0"></div>
-        <button class="btn btn-teal btn-full" onclick="saveBudgets()">Save Budgets</button>
+        <div class="set-lbl">Push Notifications</div>
+        <div class="set-sub" style="margin-bottom:10px;">Get notified on this device when a customer approves an authorization.</div>
+        <button class="btn btn-teal btn-full" onclick="requestNotificationPermission()">Enable Notifications on This Device</button>
       </div>
       <div class="dsec">
         <div class="fl" style="margin-bottom:10px;">Add User Account</div>
@@ -1305,6 +1354,7 @@ async function checkIncomingApprovals(){
       j.log.push({time:a.approvalDate,msg:`Customer approval received — signed by ${a.approvalName} · Total: $${parseFloat(a.approvalTotal||0).toFixed(2)}`});
       updated=true;
       showToast(`✅ ${j.customer} approved the authorization!`);
+      sendPushNotification('Authorization Approved!',`${j.customer} signed the approval for job ${j.bol||j.id}`);
     });
     if(updated){syncNow();renderDashboard();}
   }catch(e){}
@@ -2173,7 +2223,12 @@ function removeUser(u){if(!confirm(`Remove user "${u}"?`))return;DB.users=(DB.us
 // ══════════════════════════════════════════════════════
 function openSheet(id){
   document.getElementById(id).classList.add('open');
-  if(id==='set-sheet'){renderUserList();const ss=document.getElementById('set-sync-status');if(ss)ss.textContent=`Firebase: ${getDbUrl().replace('https://','').slice(0,30)}…`;}
+  if(id==='set-sheet'){
+    renderUserList();
+    const ss=document.getElementById('set-sync-status');if(ss)ss.textContent=`Firebase: ${getDbUrl().replace('https://','').slice(0,30)}…`;
+    const pu=document.getElementById('portal-url-display');
+    if(pu)pu.textContent=`${window.location.origin}${window.location.pathname}#portal`;
+  }
 }
 function closeSheet(id){document.getElementById(id).classList.remove('open');}
 function ovClick(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
@@ -3196,7 +3251,73 @@ function printInvoice(){
   closeSheet('inv-sheet');printHTML(html);
 }
 
+// ══════════════════════════════════════════════════════
+// FEATURE: ROUTE PLANNER
+// ══════════════════════════════════════════════════════
+function showRoutePlanner(){
+  const today=new Date().toISOString().slice(0,10);
+  const todayJobs=(DB.jobs||[]).filter(j=>
+    j.scheduledDate===today&&
+    ['pending','dispatched','enroute'].includes(j.status)&&
+    j.dropoff
+  ).sort((a,b)=>(a.scheduledTime||'').localeCompare(b.scheduledTime||''));
+
+  const el=document.getElementById('route-list');
+  if(!todayJobs.length){
+    el.innerHTML=`<div class="empty"><p>No scheduled jobs with destinations for today.</p></div>`;
+    openSheet('route-sheet');return;
+  }
+
+  // Simple grouping by area (first word of city/address)
+  el.innerHTML=todayJobs.map((j,i)=>{
+    const addr=j.dropoff||'—';
+    const mapsUrl=`https://maps.google.com/?q=${encodeURIComponent(addr)}`;
+    const drv=(DB.drivers||[]).find(d=>d.id===j.driverId);
+    return`<div class="route-card">
+      <div class="route-stop">
+        <div class="route-num">${i+1}</div>
+        <div class="route-info">
+          <div class="route-cust">${j.customer}</div>
+          <div class="route-addr">${addr}</div>
+          <div style="font-size:11px;color:var(--tx3);margin-top:2px;">${j.scheduledTime?j.scheduledTime+' · ':''} ${drv?drv.name:'Unassigned'} · ${j.bol||j.id}</div>
+        </div>
+        <a href="${mapsUrl}" target="_blank" class="route-map-btn"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Go</a>
+      </div>
+    </div>`;
+  }).join('');
+
+  openSheet('route-sheet');
+}
+
+function openFullRoute(){
+  const today=new Date().toISOString().slice(0,10);
+  const jobs=(DB.jobs||[]).filter(j=>j.scheduledDate===today&&['pending','dispatched','enroute'].includes(j.status)&&j.dropoff);
+  if(!jobs.length){showToast('No destinations to route');return;}
+  // Build Google Maps multi-stop URL
+  const origin='1490+W+Hwy+98+Mary+Esther+FL';
+  const waypoints=jobs.map(j=>encodeURIComponent(j.dropoff)).join('|');
+  const url=`https://maps.google.com/maps?saddr=${origin}&daddr=${encodeURIComponent(jobs[0].dropoff)}&waypoints=${waypoints}`;
+  window.open(url,'_blank');
+}
+
+// ══════════════════════════════════════════════════════
+// FEATURE: PUSH NOTIFICATIONS
+// ══════════════════════════════════════════════════════
+async function requestNotificationPermission(){
+  if(!('Notification' in window)){showToast('Notifications not supported on this device');return;}
+  const perm=await Notification.requestPermission();
+  if(perm==='granted'){showToast('Notifications enabled ✓');localStorage.setItem('bgt_notify','1');}
+  else{showToast('Notifications blocked — check browser settings');}
+}
+
+function sendPushNotification(title,body){
+  if(Notification.permission==='granted'&&localStorage.getItem('bgt_notify')==='1'){
+    try{new Notification(title,{body,icon:'',badge:'',tag:'bgt-dispatch'});}catch(e){}
+  }
+}
+
 async function boot(){
+
   // Check if this is a customer approval link
   if(await checkApprovalMode())return;
   // Check if we have Firebase configured
